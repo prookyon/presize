@@ -37,7 +37,12 @@ export default component$(() => {
               <select
                 class="select select-bordered"
                 onChange$={(e) => {
-                  imageSelectorContext.outputSizingMode = e.target.value as OutputSizingMode;
+                  const target = e.target as HTMLSelectElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.outputSizingMode = target.value as OutputSizingMode;
                 }}
               >
                 <option value="fixed_size">Fixed Size</option>
@@ -53,7 +58,12 @@ export default component$(() => {
                 class="input input-bordered w-full"
                 value={imageSelectorContext.outputSize.width}
                 onChange$={(e) => {
-                  const value = parseInt(e.target.value);
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  const value = parseInt(target.value);
                   if (!isNaN(value) && value > 0) {
                     imageSelectorContext.outputSize = { width: value, height: imageSelectorContext.outputSize.height };
                   }
@@ -69,7 +79,12 @@ export default component$(() => {
                 class="input input-bordered w-full"
                 value={imageSelectorContext.outputSize.height}
                 onChange$={(e) => {
-                  const value = parseInt(e.target.value);
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  const value = parseInt(target.value);
                   if (!isNaN(value) && value > 0) {
                     imageSelectorContext.outputSize = { width: imageSelectorContext.outputSize.width, height: value };
                   }
@@ -85,7 +100,12 @@ export default component$(() => {
               <select
                 class="select select-bordered"
                 onChange$={(e) => {
-                  imageSelectorContext.outputFormat = e.target.value as OutputFormat;
+                  const target = e.target as HTMLSelectElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.outputFormat = target.value as OutputFormat;
                 }}
               >
                 <option value="png">PNG</option>
@@ -104,7 +124,12 @@ export default component$(() => {
                 value={imageSelectorContext.downloadNameTemplate}
                 placeholder="Presize.io_{timestamp}"
                 onInput$={(e) => {
-                  imageSelectorContext.downloadNameTemplate = e.target.value;
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.downloadNameTemplate = target.value;
                 }}
               />
             </div>
