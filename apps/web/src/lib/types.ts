@@ -7,7 +7,7 @@ export type ProcessedImage = {
   id: string;
   file: File;
   blob: Blob;
-  tag?: string;
+  caption?: string;
 };
 
 export type Size = {

@@ -14,7 +14,7 @@ type ImageFile = {
   id: string;
   file: File;
   editorRef?: AvatarEditor;
-  tag: string;
+  caption: string;
 };
 
 function TbPhotoPlus(props: SVGProps<SVGSVGElement>) {
@@ -68,7 +68,7 @@ function ImageSelectorImpl({
         ...acceptedFiles.map((file) => ({
           id: typeid().toString(),
           file,
-          tag: '',
+          caption: '',
         })),
         ...prev,
       ]);
@@ -89,7 +89,7 @@ function ImageSelectorImpl({
             id: file.id,
             file: file.file,
             blob: await getImageBlobFromEditor(file.editorRef, imageType, outputSizingMode),
-            tag: file.tag,
+            caption: file.caption,
           });
         }
       }
@@ -182,14 +182,14 @@ function ImageSelectorImpl({
           onDelete={() => {
             setFiles((prev) => prev.filter((f) => f.id !== file.id));
           }}
-          tag={file.tag}
-          onTagChange={(value) => {
+          caption={file.caption}
+          onCaptionChange={(value) => {
             setFiles((prev) =>
               prev.map((f) =>
                 f.id === file.id
                   ? {
                       ...f,
-                      tag: value,
+                      caption: value,
                     }
                   : f,
               ),

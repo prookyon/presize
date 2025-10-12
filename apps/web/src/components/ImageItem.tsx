@@ -88,8 +88,8 @@ const ImageItem = (
     outputSizingMode,
     thumbnailScale,
     onDelete,
-    tag,
-    onTagChange,
+    caption,
+    onCaptionChange,
   }: {
     file: File;
     outputSize: Size;
@@ -97,8 +97,8 @@ const ImageItem = (
     outputSizingMode: OutputSizingMode;
     thumbnailScale: number;
     onDelete: () => void;
-    tag: string;
-    onTagChange: (value: string) => void;
+    caption: string;
+    onCaptionChange: (value: string) => void;
   },
   ref: Ref<AvatarEditor>,
 ) => {
@@ -259,15 +259,15 @@ const ImageItem = (
           />
         </div>
         <div className="form-control mt-2">
-          <label className="label py-0">
-            <span className="label-text text-xs">Tags</span>
+          <label className="label">
+            <span className="label-text text-xs">Caption</span>
           </label>
           <textarea
             className="textarea textarea-bordered textarea-xs w-full"
-            placeholder="Enter tags for this image"
-            value={tag}
+            placeholder="Caption will be stored in a text file alongside each image after download"
+            value={caption}
             onChange={(e) => {
-              onTagChange(e.target.value);
+              onCaptionChange(e.target.value);
             }}
           />
         </div>
