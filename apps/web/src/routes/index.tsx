@@ -37,7 +37,12 @@ export default component$(() => {
               <select
                 class="select select-bordered"
                 onChange$={(e) => {
-                  imageSelectorContext.outputSizingMode = e.target.value as OutputSizingMode;
+                  const target = e.target as HTMLSelectElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.outputSizingMode = target.value as OutputSizingMode;
                 }}
               >
                 <option value="fixed_size">Fixed Size</option>
@@ -53,7 +58,12 @@ export default component$(() => {
                 class="input input-bordered w-full"
                 value={imageSelectorContext.outputSize.width}
                 onChange$={(e) => {
-                  const value = parseInt(e.target.value);
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  const value = parseInt(target.value);
                   if (!isNaN(value) && value > 0) {
                     imageSelectorContext.outputSize = { width: value, height: imageSelectorContext.outputSize.height };
                   }
@@ -69,7 +79,12 @@ export default component$(() => {
                 class="input input-bordered w-full"
                 value={imageSelectorContext.outputSize.height}
                 onChange$={(e) => {
-                  const value = parseInt(e.target.value);
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  const value = parseInt(target.value);
                   if (!isNaN(value) && value > 0) {
                     imageSelectorContext.outputSize = { width: imageSelectorContext.outputSize.width, height: value };
                   }
@@ -85,12 +100,38 @@ export default component$(() => {
               <select
                 class="select select-bordered"
                 onChange$={(e) => {
-                  imageSelectorContext.outputFormat = e.target.value as OutputFormat;
+                  const target = e.target as HTMLSelectElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.outputFormat = target.value as OutputFormat;
                 }}
               >
                 <option value="png">PNG</option>
                 <option value="jpeg">JPEG</option>
               </select>
+            </div>
+          </div>
+          <div class="flex lg:flex-col lg:w-64 gap-2">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Zip file name</span>
+              </label>
+              <input
+                type="text"
+                class="input input-bordered w-full"
+                value={imageSelectorContext.downloadNameTemplate}
+                placeholder="Presize.io_{timestamp}"
+                onChange$={(e) => {
+                  const target = e.target as HTMLInputElement | null;
+                  if (!target) {
+                    return;
+                  }
+
+                  imageSelectorContext.downloadNameTemplate = target.value;
+                }}
+              />
             </div>
           </div>
           <div class="flex lg:flex-col lg:w-64 gap-2 pt-2">
@@ -130,7 +171,13 @@ export default component$(() => {
                 const hiddenLink = document.createElement('a');
                 hiddenLink.style.display = 'none';
                 hiddenLink.href = zipUrl;
-                hiddenLink.download = `Presize.io_${dayjs().format('YYYY-MM-DD_HH-mm-ss')}.zip`;
+                const formattedDate = dayjs().format('YYYY-MM-DD_HH-mm-ss');
+                const template = (imageSelectorContext.downloadNameTemplate || '').trim() || 'Presize.io_{timestamp}';
+                let downloadName = template.replaceAll('{timestamp}', formattedDate);
+                if (!downloadName.toLowerCase().endsWith('.zip')) {
+                  downloadName += '.zip';
+                }
+                hiddenLink.download = downloadName;
                 document.body.appendChild(hiddenLink);
 
                 hiddenLink.click();
