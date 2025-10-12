@@ -123,7 +123,7 @@ export default component$(() => {
                 class="input input-bordered w-full"
                 value={imageSelectorContext.downloadNameTemplate}
                 placeholder="Presize.io_{timestamp}"
-                onInput$={(e) => {
+                onChange$={(e) => {
                   const target = e.target as HTMLInputElement | null;
                   if (!target) {
                     return;
