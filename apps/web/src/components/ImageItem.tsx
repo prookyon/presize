@@ -88,6 +88,8 @@ const ImageItem = (
     outputSizingMode,
     thumbnailScale,
     onDelete,
+    tag,
+    onTagChange,
   }: {
     file: File;
     outputSize: Size;
@@ -95,6 +97,8 @@ const ImageItem = (
     outputSizingMode: OutputSizingMode;
     thumbnailScale: number;
     onDelete: () => void;
+    tag: string;
+    onTagChange: (value: string) => void;
   },
   ref: Ref<AvatarEditor>,
 ) => {
@@ -251,6 +255,19 @@ const ImageItem = (
               } else {
                 setRotation(rot);
               }
+            }}
+          />
+        </div>
+        <div className="form-control mt-2">
+          <label className="label py-0">
+            <span className="label-text text-xs">Tags</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered textarea-xs w-full"
+            placeholder="Enter tags for this image"
+            value={tag}
+            onChange={(e) => {
+              onTagChange(e.target.value);
             }}
           />
         </div>
