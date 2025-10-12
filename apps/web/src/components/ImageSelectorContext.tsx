@@ -18,6 +18,7 @@ type ImageSelectorContextData = {
   outputFormat: OutputFormat;
   outputSizingMode: OutputSizingMode;
   processing: boolean;
+  downloadNameTemplate: string;
 };
 
 export const ImageSelectorContext = createContextId<ImageSelectorContextData>('image-selector-context');
@@ -29,6 +30,7 @@ export const ImageSelectorContextProvider = component$(() => {
     outputFormat: 'png',
     outputSizingMode: 'fixed_size',
     processing: false,
+    downloadNameTemplate: 'Presize.io_{timestamp}',
   });
   useContextProvider(ImageSelectorContext, context);
 

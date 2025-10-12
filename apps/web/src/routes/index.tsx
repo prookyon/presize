@@ -93,6 +93,22 @@ export default component$(() => {
               </select>
             </div>
           </div>
+          <div class="flex lg:flex-col lg:w-64 gap-2">
+            <div class="form-control w-full">
+              <label class="label">
+                <span class="label-text">Zip file name</span>
+              </label>
+              <input
+                type="text"
+                class="input input-bordered w-full"
+                value={imageSelectorContext.downloadNameTemplate}
+                placeholder="Presize.io_{timestamp}"
+                onInput$={(e) => {
+                  imageSelectorContext.downloadNameTemplate = e.target.value;
+                }}
+              />
+            </div>
+          </div>
           <div class="flex lg:flex-col lg:w-64 gap-2 pt-2">
             <button
               class="btn btn-block btn-neutral"
@@ -130,7 +146,13 @@ export default component$(() => {
                 const hiddenLink = document.createElement('a');
                 hiddenLink.style.display = 'none';
                 hiddenLink.href = zipUrl;
-                hiddenLink.download = `Presize.io_${dayjs().format('YYYY-MM-DD_HH-mm-ss')}.zip`;
+                const formattedDate = dayjs().format('YYYY-MM-DD_HH-mm-ss');
+                const template = (imageSelectorContext.downloadNameTemplate || '').trim() || 'Presize.io_{timestamp}';
+                let downloadName = template.replaceAll('{timestamp}', formattedDate);
+                if (!downloadName.toLowerCase().endsWith('.zip')) {
+                  downloadName += '.zip';
+                }
+                hiddenLink.download = downloadName;
                 document.body.appendChild(hiddenLink);
 
                 hiddenLink.click();
