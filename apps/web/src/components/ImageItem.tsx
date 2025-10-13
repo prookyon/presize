@@ -88,6 +88,8 @@ const ImageItem = (
     outputSizingMode,
     thumbnailScale,
     onDelete,
+    caption,
+    onCaptionChange,
   }: {
     file: File;
     outputSize: Size;
@@ -95,6 +97,8 @@ const ImageItem = (
     outputSizingMode: OutputSizingMode;
     thumbnailScale: number;
     onDelete: () => void;
+    caption: string;
+    onCaptionChange: (value: string) => void;
   },
   ref: Ref<AvatarEditor>,
 ) => {
@@ -251,6 +255,19 @@ const ImageItem = (
               } else {
                 setRotation(rot);
               }
+            }}
+          />
+        </div>
+        <div className="form-control mt-2">
+          <label className="label">
+            <span className="label-text text-xs">Caption</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered textarea-xs w-full"
+            placeholder="Caption will be stored in a text file alongside each image after download"
+            value={caption}
+            onChange={(e) => {
+              onCaptionChange(e.target.value);
             }}
           />
         </div>

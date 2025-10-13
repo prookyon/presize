@@ -163,6 +163,14 @@ export default component$(() => {
 
                   const newFileName = fileName.replace(/\.[^.]+$/, '') + `.${imageSelectorContext.outputFormat}`;
                   zip.file(newFileName, result.blob);
+                  if (result.caption && result.caption.trim().length > 0) {
+                    const textFileName = newFileName.replace(/\.[^.]+$/, '.txt');
+                    const normalizedCaption = result.caption.replace(/\r\n/g, '\n').trim();
+                    const captionContent = normalizedCaption.endsWith('\n')
+                      ? normalizedCaption
+                      : normalizedCaption + '\n';
+                    zip.file(textFileName, captionContent);
+                  }
                 }
 
                 const zipBlob = await zip.generateAsync({ type: 'blob' });
