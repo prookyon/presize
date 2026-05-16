@@ -36,6 +36,17 @@ function TbX(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function TbCopy(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <path d="M8 8m0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2z"></path>
+        <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+      </g>
+    </svg>
+  );
+}
+
 export function TbZoomIn(props: SVGProps<SVGSVGElement>) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -47,6 +58,17 @@ export function TbZoomIn(props: SVGProps<SVGSVGElement>) {
         strokeWidth="2"
         d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m4 0h6m-3-3v6m11 8l-6-6"
       ></path>
+    </svg>
+  );
+}
+
+export function TbZoomReset(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+        <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m4 0h6m8 11l-6-6"></path>
+        <path d="M21 15v6h-6"></path>
+      </g>
     </svg>
   );
 }
@@ -88,6 +110,7 @@ const ImageItem = (
     outputSizingMode,
     thumbnailScale,
     onDelete,
+    onDuplicate,
     caption,
     onCaptionChange,
   }: {
@@ -97,12 +120,14 @@ const ImageItem = (
     outputSizingMode: OutputSizingMode;
     thumbnailScale: number;
     onDelete: () => void;
+    onDuplicate: () => void;
     caption: string;
     onCaptionChange: (value: string) => void;
   },
   ref: Ref<AvatarEditor>,
 ) => {
   const editorRef = useRef<AvatarEditor | null>(null);
+  const initialScaleRef = useRef<number | null>(null);
   const [scale, setScaleImpl] = useState(1);
   const [minScalePerc, setMinScalePerc] = useState(1);
   const [maxScalePerc, setMaxScalePerc] = useState(1);
@@ -148,6 +173,9 @@ const ImageItem = (
             scale={scale}
             rotate={rotation}
             onLoadSuccess={(image) => {
+              if (initialScaleRef.current === null) {
+                initialScaleRef.current = scale;
+              }
               setMinScalePerc(
                 Math.ceil((Math.min(image.width, image.height) / Math.max(image.width, image.height)) * 100),
               );
@@ -182,6 +210,15 @@ const ImageItem = (
             }}
           >
             <TbDownload />
+          </button>
+          <button
+            className="btn btn-xs btn-square"
+            title="Duplicate image"
+            onClick={() => {
+              onDuplicate();
+            }}
+          >
+            <TbCopy />
           </button>
           <button
             className="btn btn-xs btn-square"
@@ -224,6 +261,16 @@ const ImageItem = (
               }
             }}
           />
+          <button
+            type="button"
+            className="btn btn-xs btn-square"
+            title="Reset zoom"
+            onClick={() => {
+              setScale(initialScaleRef.current ?? 1);
+            }}
+          >
+            <TbZoomReset />
+          </button>
         </div>
         <div className="flex items-center gap-2 mt-2">
           <div className="text-lg">

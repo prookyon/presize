@@ -182,6 +182,23 @@ function ImageSelectorImpl({
           onDelete={() => {
             setFiles((prev) => prev.filter((f) => f.id !== file.id));
           }}
+          onDuplicate={() => {
+            setFiles((prev) => {
+              const imageIndex = prev.findIndex((f) => f.id === file.id);
+              if (imageIndex === -1) {
+                return prev;
+              }
+
+              const nextFiles = [...prev];
+              nextFiles.splice(imageIndex + 1, 0, {
+                id: typeid().toString(),
+                file: file.file,
+                caption: file.caption,
+              });
+
+              return nextFiles;
+            });
+          }}
           caption={file.caption}
           onCaptionChange={(value) => {
             setFiles((prev) =>
