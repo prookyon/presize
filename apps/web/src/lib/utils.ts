@@ -1,6 +1,22 @@
 import AvatarEditor from 'react-avatar-editor';
 
-import { OutputSizingMode } from './types';
+import { OutputSizingMode, Size } from './types';
+
+const ASPECT_RATIO_EDITOR_LONG_EDGE = 400;
+
+export const getEditorSize = (outputSize: Size, sizingMode: OutputSizingMode): Size => {
+  if (sizingMode === 'fixed_size') {
+    return outputSize;
+  }
+
+  const longestEdge = Math.max(outputSize.width, outputSize.height);
+  const scale = ASPECT_RATIO_EDITOR_LONG_EDGE / longestEdge;
+
+  return {
+    width: Math.max(1, Math.round(outputSize.width * scale)),
+    height: Math.max(1, Math.round(outputSize.height * scale)),
+  };
+};
 
 export const getImageBlobFromEditor = (editor: AvatarEditor, type: string, sizingMode: OutputSizingMode) => {
   return new Promise<Blob>((resolve, reject) => {

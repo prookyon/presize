@@ -6,7 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import { typeid } from 'typeid-js';
 
 import { OutputFormat, OutputSizingMode, ProcessedImage, Size } from '~/lib/types';
-import { getImageBlobFromEditor } from '~/lib/utils';
+import { getEditorSize, getImageBlobFromEditor } from '~/lib/utils';
 
 import ImageItem from './ImageItem';
 
@@ -56,6 +56,7 @@ function ImageSelectorImpl({
   outputFormat: OutputFormat;
 }) {
   const [files, setFiles] = useState<ImageFile[]>([]);
+  const editorSize = useMemo(() => getEditorSize(outputSize, outputSizingMode), [outputSize, outputSizingMode]);
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     noClick: true,
     accept: {
@@ -76,9 +77,9 @@ function ImageSelectorImpl({
   });
 
   const thumbnailScale = useMemo(() => {
-    const longestEdge = Math.max(outputSize.width, outputSize.height);
+    const longestEdge = Math.max(editorSize.width, editorSize.height);
     return 400 / longestEdge;
-  }, [outputSize]);
+  }, [editorSize]);
 
   useEffect(() => {
     const provider = async (imageType: string) => {
@@ -145,8 +146,8 @@ function ImageSelectorImpl({
             isDragActive ? 'border-neutral' : 'border-base-200'
           }`,
           style: {
-            width: (thumbnailScale * outputSize.width).toFixed(2) + 'px',
-            height: (thumbnailScale * outputSize.height + 84).toFixed(2) + 'px',
+            width: (thumbnailScale * editorSize.width).toFixed(2) + 'px',
+            height: (thumbnailScale * editorSize.height + 84).toFixed(2) + 'px',
           },
         })}
       >
@@ -175,7 +176,7 @@ function ImageSelectorImpl({
           }}
           key={file.id}
           file={file.file}
-          outputSize={outputSize}
+          outputSize={editorSize}
           outputSizingMode={outputSizingMode}
           outputFormat={outputFormat}
           thumbnailScale={thumbnailScale}
