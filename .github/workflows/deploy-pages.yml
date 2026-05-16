@@ -35,6 +35,8 @@ jobs:
           run_install: true
 
       - name: build static site
+        env:
+          BASE_PATHNAME: /presize/
         run: pnpm --filter web build.static
 
       - name: setup pages
@@ -43,7 +45,7 @@ jobs:
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/web/dist
+          path: apps/web/dist/presize
 
   deploy:
     name: deploy to github pages

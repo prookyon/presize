@@ -2,6 +2,7 @@ import './global.css';
 
 import { component$, useVisibleTask$ } from '@builder.io/qwik';
 import { QwikCityProvider, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
+import { basePathname } from '@qwik-city-plan';
 import mixpanel from 'mixpanel-browser';
 
 import { ImageSelectorContextProvider } from './components/ImageSelectorContext';
@@ -22,7 +23,7 @@ export default component$(() => {
     <QwikCityProvider>
       <head>
         <meta charSet="utf-8" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href={`${basePathname}manifest.json`} />
         <RouterHead />
         <ServiceWorkerRegister />
       </head>

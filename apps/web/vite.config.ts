@@ -6,6 +6,7 @@ import { qwikReact } from '@builder.io/qwik-react/vite';
 
 export default defineConfig(() => {
   return {
+    base: process.env.BASE_PATHNAME ?? '/',
     server: {
       port: 3000,
     },
